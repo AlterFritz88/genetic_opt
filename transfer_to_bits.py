@@ -72,8 +72,6 @@ transformed_blocks = transform_params(all_blocks)
 num_blocks = [3,8, 2,10]
 print(func_opt(num_blocks=num_blocks, blocks=transformed_blocks))
 
-
-
 '''
 
 full_choice = {}
