@@ -58,7 +58,6 @@ def func_opt(num_blocks: list = [], blocks: list = [], opt = 1):
     otn_num_blocks = [x/total_case for x, total_case in zip(num_blocks, range_blocks)]
     for property in properties:
         global_func.append(sum([(x.__getattribute__(property)*rangs[property][1]*rangs[property][0]) * y for x, y in zip(blocks, otn_num_blocks)]))
-    print(sum(global_func))
     return (opt - sum(global_func))**2
 
 
