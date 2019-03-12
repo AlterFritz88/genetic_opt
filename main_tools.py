@@ -42,6 +42,7 @@ def tournament_selection(population):
     return new_generation
 
 
+
 def crossover_random_point(generation, blocks, crossover_chance=0.7):
     num_pairs = len(generation) // 2
     creatures = [code_chromosome(x[0], blocks) for x in generation]
@@ -64,9 +65,11 @@ def crossover_random_point(generation, blocks, crossover_chance=0.7):
     print(len(new_generation))
 
 
+
 def code_chromosome(creature, blocks):
     get_max_len = [math.ceil(math.log2(x.max_blocks + 1 - x.min_blocks)) for x in blocks]
     creature_splited = creature.split(' ')
+
     creature_transformed = [int(x) - y.min_blocks for x, y in zip(creature_splited, blocks)]
     coded = [hex2bin(x, y) for x, y in zip(creature_transformed, get_max_len)]
     return ''.join(coded)
@@ -80,10 +83,12 @@ def get_chromosome_params(blocks):
 
 
 if __name__ == '__main__':
+
     KG_SV = Block('КГ-СВ', 50, 1,   1, 3)
     KVS = Block('КВС', 50, 60,      1, 8)
     RG = Block('РГ', 50, 1,         5, 8)
     IPSM = Block('ИПСМ', 50, 60,    1, 10)
+
     total_case = 20
     all_blocks = [KG_SV, KVS, RG, IPSM]
     rangs = {
