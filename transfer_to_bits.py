@@ -63,7 +63,7 @@ def func_opt(num_blocks: list = [], blocks: list = []):
         global_func.append(sum([(x.__getattribute__(property)*rangs[property][1]*rangs[property][0]) * y for x, y in zip(blocks, otn_num_blocks)]))
         print([(x.__getattribute__(property)*rangs[property][0])*y for x, y in zip(blocks, otn_num_blocks)])
 
-    return sum(global_func)
+    return (opt - sum(global_func))**2
 
 
 transformed_blocks = transform_params(all_blocks)
