@@ -1,5 +1,14 @@
 import random
+import math
 from transfer_to_bits import Block, func_opt, transform_params
+
+
+def hex2bin(str, lenght):
+    """
+    Переводчик hex, oct str в bin str
+    """
+    a = int(str)
+    return format(a, '0>{}b'.format(lenght))
 
 def creat_init_population(number_creatures, blocks, box_size):
     creatures = []
@@ -16,46 +25,66 @@ def get_fit_functions(population, blocks, opt):
     sorted_values = sorted(values.items(), key=lambda kv: kv[1])
     return sorted_values
 
+
 def tournament_selection(population):
     num_pairs = len(population) // 2
     temp_population = population[:]
     new_generation = []
-    pairs = []
     for i in range(num_pairs):
         par_1 = random.choice(temp_population)
         temp_population.remove(par_1)
         par_2 = random.choice(temp_population)
         temp_population.remove(par_2)
-        print(par_1[1], par_2[1])
         if par_1[1] < par_2[1]:
             new_generation.append(par_1)
         else:
             new_generation.append(par_2)
     return new_generation
 
+def crossover_random_point(generation, blocks):
+    pairs = []
+    num_creatures = len(generation)
+    creatures = [code_chromosome(x[0], blocks) for x in generation]
+    print(creatures)
 
+
+def code_chromosome(creature, blocks):
+    get_max_len = [math.ceil(math.log2(x.max_blocks + 1 - x.min_blocks)) for x in blocks]
+    creature_splited = creature.split(' ')
+    creature_transformed = [int(x) - y.min_blocks + 1 for x, y in zip(creature_splited, blocks)]
+    coded = [hex2bin(x, y) for x, y in zip(creature_transformed, get_max_len)]
+    return ''.join(coded)
+
+
+def get_chromosome_params(blocks):
+    get_max_len = [math.ceil(math.log2(x.max_blocks - x.min_blocks)) for x in blocks]
+    lenght_chromosome = sum(get_max_len)
+    return get_max_len, lenght_chromosome
 
 
 
 if __name__ == '__main__':
     KG_SV = Block('КГ-СВ', 50, 1, 1, 3)
     KVS = Block('КВС', 50, 60, 1, 8)
-    RG = Block('РГ', 50, 1, 1, 8)
+    RG = Block('РГ', 50, 1, 5, 8)
     IPSM = Block('ИПСМ', 50, 60, 1, 10)
     total_case = 20
     all_blocks = [KG_SV, KVS, RG, IPSM]
     rangs = {
-        'cost': [0.4, 0],
-        'wires': [0.6, 1],
+        'cost': [0.4, 1],
+        'wires': [0.6, 0],
         #  'power':        [0.1, 1],
         #  'russian_mc':   [0.1, -1],
         #  'time_to_build':[0.1, -1],
         #  'count_elem':   [0.5, -1]
     }
     opt = sum([val[0] * val[1] for val in rangs.values()])
+    print('opt', opt)
     transformed_blocks = transform_params(all_blocks)
-
 
     init_pop = creat_init_population(100, transformed_blocks, total_case)
     first_gen = get_fit_functions(init_pop, transformed_blocks, opt)
-    print(tournament_selection(first_gen))
+    selected = tournament_selection(first_gen)
+    print(crossover_random_point(selected, all_blocks))
+
+    print(code_chromosome('3 5 5 6', all_blocks))
