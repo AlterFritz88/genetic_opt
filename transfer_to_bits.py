@@ -21,17 +21,17 @@ class Block:
 
 
 KG_SV = Block('КГ-СВ',  50,    1,   1, 3)
-KVS = Block('КВС',      50,    60,   1, 8)
-RG = Block('РГ',        50,    1,   1, 8)
-IPSM = Block('ИПСМ',    50,    60,   1, 10)
+KVS = Block('КВС',      50,    1,   1, 8)
+RG = Block('РГ',        50,    4,   1, 8)
+IPSM = Block('ИПСМ',    50,    1,   1, 10)
 total_case = 20
 
 all_blocks = [KG_SV, KVS, RG, IPSM]
 
 
 rangs = {
-    'cost':         [0.3, 0],
-    'wires':        [0.7, 1],
+    'cost':         [0.3, 1],
+    'wires':        [0.7, -1],
   #  'power':        [0.1, 1],
   #  'russian_mc':   [0.1, -1],
   #  'time_to_build':[0.1, -1],
@@ -39,6 +39,7 @@ rangs = {
 }
 
 opt = sum([val[0] * val[1] for val in rangs.values()])
+print(opt)
 
 def transform_params(blocks):
     block_new_coef = blocks[:]
@@ -56,9 +57,18 @@ def func_opt(num_blocks: list = [], blocks: list = [], opt = 1):
     global_func = []
     range_blocks = [x.max_blocks + 1 - x.min_blocks for x in all_blocks]
     otn_num_blocks = [x/total_case for x, total_case in zip(num_blocks, range_blocks)]
+    otn_num_blocks_minus = [1 - (x / total_case) for x, total_case in zip(num_blocks, range_blocks)]
+
+
     for property in properties:
-        global_func.append(sum([(x.__getattribute__(property)*rangs[property][1]*rangs[property][0]) * y for x, y in zip(blocks, otn_num_blocks)]))
-    return (opt - sum(global_func))**2
+        if rangs[property][1] == 1:
+            global_func.append(sum([(x.__getattribute__(property)*rangs[property][1]*rangs[property][0]) * y for x, y in zip(blocks, otn_num_blocks)]))
+        else:
+            global_func.append(sum(
+                [(x.__getattribute__(property) * rangs[property][1] * rangs[property][0]) * y for x, y in
+                 zip(blocks, otn_num_blocks_minus)]))
+
+    return abs(opt - sum(global_func))                  # надо по другому считать функцию приспособленности
 
 
 
@@ -67,11 +77,11 @@ if __name__ == '__main__':
     transformed_blocks = transform_params(all_blocks)
 
 
-    num_blocks = [3,8, 2,10]
-    print(func_opt(num_blocks=num_blocks, blocks=transformed_blocks))
+    num_blocks = [1,5, 1,1]
+    print(func_opt(num_blocks=num_blocks, blocks=transformed_blocks, opt=opt))
 
-    '''
-    
+
+
     full_choice = {}
     for kg in range(1,4):
         for kvs in range(1,11):
@@ -108,4 +118,3 @@ if __name__ == '__main__':
             best = (k, (opt - v)**2)
     
     print(best[0], random_ch[best[0]])
-    '''
