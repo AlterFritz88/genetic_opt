@@ -1,7 +1,5 @@
 import random
-
-types_blocks = ['КГ-СВ', 'КВС', 'РГ', 'ИПСМ']
-
+from itertools import product
 
 class Block:
     def __init__(self, name, cost, wires, min_blocks, max_blocks):
@@ -19,31 +17,9 @@ class Block:
         self.max_blocks = max_blocks
         '''
 
-
-KG_SV = Block('КГ-СВ', 50, 1, 1, 3)
-KVS = Block('КВС', 50, 1, 1, 8)
-RG = Block('РГ', 50, 4, 1, 8)
-IPSM = Block('ИПСМ', 50, 1, 1, 10)
-total_case = 20
-
-all_blocks = [KG_SV, KVS, RG, IPSM]
-
-rangs = {
-    'cost': [0.3, 1],
-    'wires': [0.7, -1],
-    #  'power':        [0.1, 1],
-    #  'russian_mc':   [0.1, -1],
-    #  'time_to_build':[0.1, -1],
-    #  'count_elem':   [0.5, -1]
-}
-
-optimum = sum([val[0] * val[1] for val in rangs.values()])
-print(optimum)
-
-
 def transform_params(blocks):
     block_new_coef = blocks[:]
-    properties = [x for x in list(KG_SV.__dict__.keys()) if x not in ['name', 'min_blocks', 'max_blocks']]
+    properties = [x for x in list(blocks[0].__dict__.keys()) if x not in ['name', 'min_blocks', 'max_blocks']]
     for property in properties:
         sum_proper = sum([x.__getattribute__(property) for x in blocks])
         for block in block_new_coef:
@@ -51,10 +27,10 @@ def transform_params(blocks):
     return block_new_coef
 
 
-def func_opt(num_blocks: list = [], blocks: list = [], opt=1):
-    properties = [x for x in list(KG_SV.__dict__.keys()) if x not in ['name', 'min_blocks', 'max_blocks']]
+def func_opt(rangs, num_blocks: list = [], blocks: list = [], opt=1):
+    properties = [x for x in list(blocks[0].__dict__.keys()) if x not in ['name', 'min_blocks', 'max_blocks']]
     global_func = []
-    range_blocks = [x.max_blocks + 1 - x.min_blocks for x in all_blocks]
+    range_blocks = [x.max_blocks + 1 - x.min_blocks for x in blocks]
     otn_num_blocks = [x / total_case for x, total_case in zip(num_blocks, range_blocks)]
     otn_num_blocks_minus = [1 - (x / total_case) for x, total_case in zip(num_blocks, range_blocks)]
 
@@ -73,6 +49,19 @@ def func_opt(num_blocks: list = [], blocks: list = [], opt=1):
 
 def opt(rangs):
     return sum([val[0] * val[1] for val in rangs.values()])
+
+
+def full_choice(blocks, total_case, opt, rangs):
+
+    range_blocks = [range(x.min_blocks, x.max_blocks+1) for x in blocks]
+    output_comb = list(product(*range_blocks))
+    output_comb = [list(x) for x in output_comb if sum(x) <= total_case]
+
+    temp_list = [' '.join(str(y) for y in x) for x in output_comb]
+
+    full_choice = {x: func_opt(rangs, y, blocks, opt) for x, y in zip(temp_list, output_comb)}
+    full_choice_sorted = sorted(full_choice.items(), key=lambda kv: kv[1])
+    print(full_choice_sorted)
 
 
 if __name__ == '__main__':

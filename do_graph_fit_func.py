@@ -46,7 +46,7 @@ ax = plt.axes(projection='3d')
 ax.scatter(X, Y, Z, c=Z, cmap='hot', linewidth=3)
 plt.xlabel('Кол-во блоков КВС шт.')
 plt.ylabel('Кол-во блоков РГ шт.')
-plt.title('Зависимость функции приспособленности от количесва блоков в системе')
+plt.title('Зависимость значения функции приспособленности от количесва блоков в системе')
 ax.set_zlabel('Значение fit functon')
 
 plt.show()

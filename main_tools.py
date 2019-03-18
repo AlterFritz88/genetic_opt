@@ -6,8 +6,9 @@ from transfer_to_bits import Block, func_opt, transform_params
 
 class GeneticAlg:
 
-    def __init__(self, blocks, box_size, opt, n_population, generations, cross_chance, mutate_chance):
+    def __init__(self, blocks, box_size, opt, rangs, n_population, generations, cross_chance, mutate_chance):
         self.n_population = n_population
+        self.rangs = rangs
         self.box_size = box_size
         self.opt = opt
         self.blocks = blocks
@@ -33,7 +34,7 @@ class GeneticAlg:
 
 
     def get_fit_functions(self, population):
-        values = {' '.join(str(x) for x in person): func_opt(person, self.blocks, self.opt) for person in population}
+        values = {' '.join(str(x) for x in person): func_opt(self.rangs, person, self.blocks, self.opt) for person in population}
         sorted_values = sorted(values.items(), key=lambda kv: kv[1])
         return sorted_values
 
@@ -85,7 +86,6 @@ class GeneticAlg:
         new_generation = []
         lens, _ = self.get_chromosome_params()
         lens = list(accumulate(lens))[:-1]
-        print(lens)
         for i in range(num_pairs):
             par_1 = random.choice(creatures)
             creatures.remove(par_1)
@@ -106,7 +106,6 @@ class GeneticAlg:
 
 
     def mutation(self, generation):
-        print(generation)
         mutated_generation = []
         for creature in generation:
             mutated_creature = []
@@ -162,10 +161,11 @@ class GeneticAlg:
 
     def start(self):
         population = self.creat_init_population(self.n_population)
-        for generation in self.generations:
+        for generation in range(self.generations):
             population = self.get_fit_functions(population)
             population_selected = self.tournament_selection(population)
-            population_mutated = self.crossover_by_block(population_selected)
+            population_crossovered = self.crossover_by_block(population_selected)
+            population_mutated = self.mutation(population_crossovered)
             population_reducted = self.check_and_kill_chromosome(population_mutated)
             population = population_reducted[:]
         return self.get_fit_functions(population)
