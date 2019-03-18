@@ -61,37 +61,5 @@ def full_choice(blocks, total_case, opt, rangs):
 
     full_choice = {x: func_opt(rangs, y, blocks, opt) for x, y in zip(temp_list, output_comb)}
     full_choice_sorted = sorted(full_choice.items(), key=lambda kv: kv[1])
-    print(full_choice_sorted)
+    return full_choice_sorted
 
-
-if __name__ == '__main__':
-
-    transformed_blocks = transform_params(all_blocks)
-
-    num_blocks = [1, 5, 1, 1]
-    print(func_opt(num_blocks=num_blocks, blocks=transformed_blocks, opt=optimum))
-
-    full_choice = {}
-    for kg in range(1, 4):
-        for kvs in range(1, 11):
-            for rg in range(1, 9):
-                for ip in range(1, 11):
-                    if sum([kg, kvs, rg, ip]) > total_case:
-                        continue
-                    temp_list = [str(kg), str(kvs), str(rg), str(ip)]
-                    full_choice[' '.join(temp_list)] = func_opt([kg, kvs, rg, ip], transformed_blocks, optimum)
-
-    full_choice_sorted = sorted(full_choice.items(), key=lambda kv: kv[1])
-    print(full_choice_sorted)
-
-    # random test
-    random_ch = {}
-    for i in range(90000):
-        num_blocks = [random.randint(1, 10) for x in range(4)]
-        if sum(num_blocks) > total_case:
-            continue
-        temp_list = [str(x) for x in num_blocks]
-        random_ch[' '.join(temp_list)] = func_opt(num_blocks, transformed_blocks, optimum)
-
-    random_ch_sorted = sorted(random_ch.items(), key=lambda kv: kv[1])
-    print(random_ch_sorted)

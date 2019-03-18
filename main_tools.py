@@ -162,6 +162,7 @@ class GeneticAlg:
     def start(self):
         population = self.creat_init_population(self.n_population)
         for generation in range(self.generations):
+            print('this is {} generation'.format(generation))
             population = self.get_fit_functions(population)
             population_selected = self.tournament_selection(population)
             population_crossovered = self.crossover_by_block(population_selected)
