@@ -1,3 +1,6 @@
+from itertools import product
+import numpy as np
+
 from main_tools import GeneticAlg
 from transfer_to_bits import opt, transform_params, full_choice
 
@@ -33,7 +36,34 @@ rangs = {
 optimum = opt(rangs)
 print(optimum)
 blocks = transform_params(all_blocks)
-GA = GeneticAlg(blocks, total_case, optimum, rangs, 100, 5, 0.7, 0.1)
-print(GA.start())
 
-print(full_choice(blocks, total_case, optimum, rangs))
+full_choice_result = full_choice(blocks, total_case, optimum, rangs)[0][1]
+exp_points = [(10, 90), (10, 90), (0.1, 0.9), (0.1, 0.9)]
+# размер поп    10  90
+# поколения     10  90
+# кросоовер     0.1 0.9
+# мутация       0.1 0.9
+
+exp_comb = list(product(*exp_points))
+print(exp_comb)
+
+
+results = {}
+for exp in exp_comb:
+    GA = GeneticAlg(blocks, total_case, optimum, rangs, exp[0], exp[1], exp[2], exp[3])
+    print(exp)
+    results[exp] = []
+
+    for i in range(3):                  # 3 эксперемента для каждого
+        results_for_10_starts = []
+        for pusk in range(10):             # 10 запусков алгоритма
+            result_for_10_starts = GA.start()
+            results_for_10_starts.append(result_for_10_starts[0][1])
+        ga_result = np.array(results_for_10_starts).mean() - full_choice_result
+        results[exp].append(ga_result)
+    results[exp].append(np.array(results[exp]).mean())
+
+
+print(results)
+
+#print(full_choice(blocks, total_case, optimum, rangs))
