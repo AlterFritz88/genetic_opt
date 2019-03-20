@@ -47,12 +47,11 @@ exp_points = [(10, 90), (10, 90), (0.1, 0.9), (0.1, 0.9)]
 exp_comb = list(product(*exp_points))
 print(exp_comb)
 
-
-results = {}
+results3 = {}
 for exp in exp_comb:
     GA = GeneticAlg(blocks, total_case, optimum, rangs, exp[0], exp[1], exp[2], exp[3])
     print(exp)
-    results[exp] = []
+    results3[exp] = []
 
     for i in range(3):                  # 3 эксперемента для каждого
         results_for_10_starts = []
@@ -60,10 +59,37 @@ for exp in exp_comb:
             result_for_10_starts = GA.start()
             results_for_10_starts.append(result_for_10_starts[0][1])
         ga_result = np.array(results_for_10_starts).mean() - full_choice_result
-        results[exp].append(ga_result)
-    results[exp].append(np.array(results[exp]).mean())
+        results3[exp].append(ga_result)
+    results3[exp].append(np.array(results3[exp]).mean())
 
-
-print(results)
+print(results3)
 
 #print(full_choice(blocks, total_case, optimum, rangs))
+
+
+RG = Block('РГ',        200, 5, 30, 600,    2400,   1, 10)
+IPSM = Block('ИПСМ',    210, 4, 30, 600,    2600,   1, 10)
+KVS = Block('КВС',      190, 4, 40, 700,    2000,   1, 10)
+ZIV = Block('ЗИВ',      200, 5, 30, 600,    2300,   1, 10)
+FTS = Block('ФТС',      180, 5, 30, 600,    2500,   1, 10)
+KG_SV = Block('КГ-СВ',  200, 5, 30, 600,    2400,   1, 10)
+
+PPK = Block('PPK',      200, 4, 40, 700,    2000,   1, 10)
+VPK = Block('VPK',      195, 5, 30, 600,    2300,   1, 10)
+PUP = Block('PUP',      205, 5, 34, 650,    2500,   1, 10)
+KRIK = Block('KRIK',    200, 6, 30, 670,    2400,   1, 10)
+
+
+total_case = 15
+all_blocks = [RG, IPSM, KVS, ZIV, FTS, KG_SV, PPK, VPK, PUP, KRIK]
+blocks = transform_params(all_blocks)
+full_choice_result = full_choice(blocks, total_case, optimum, rangs)[0][1]
+
+
+
+'''
+with open('results.csv', 'w') as f:
+    f.write('F1,F2,F3,F4,F5,Ex1,Ex2,Ex3,Avg\n')
+    for key, val in results3.items():
+        f.write('3,{},{},{},{},{},{},{},{}\n'.format(key[0], key[1], key[2], key[3], val[0], val[1], val[2], val[3]))
+'''

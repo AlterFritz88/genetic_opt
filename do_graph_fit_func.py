@@ -4,40 +4,32 @@ import numpy as np
 
 from transfer_to_bits import *
 
-KVS = Block('КВС',  10, 1,   1, 8)
-RG = Block('РГ',    6, 4,   1, 8)
+KVS = Block('КВС',  10, 1,   1, 10)
+RG = Block('РГ',    6, 4,   1, 10)
 
 all_blocks = [KVS, RG]
 
 rangs = {
-    'cost': [0.4, -1],
-    'wires': [0.6, 1],
+    'cost': [0.2, -1],
+    'wires': [0.25, 1],
+    'cost1': [0.25, +1],
+    'wires1': [0.3, -1],
     #  'power':        [0.1, 1],
     #  'russian_mc':   [0.1, -1],
     #  'time_to_build':[0.1, -1],
     #  'count_elem':   [0.5, -1]
 }
-total_case = 12
+total_case = 20
 optimum = opt(rangs)
 
 transformed_blocks = transform_params(all_blocks)
 
 
-full_choice = {}
-for kg in range(1, 9):
-    for kvs in range(1, 9):
+full_choice_ans = full_choice(transformed_blocks, total_case, optimum, rangs)
 
-        if sum([kg, kvs]) > total_case:
-            continue
-        temp_list = [str(kg), str(kvs)]
-        full_choice[' '.join(temp_list)] = func_opt([kg, kvs], transformed_blocks, optimum)
-
-full_choice_sorted = sorted(full_choice.items(), key=lambda kv: kv[1])
-print(full_choice_sorted)
-
-X = np.array([int(x[0].split(' ')[0]) for x in full_choice_sorted])
-Y = np.array([int(x[0].split(' ')[1]) for x in full_choice_sorted])
-Z = np.array([x[1] for x in full_choice_sorted])
+X = np.array([int(x[0].split(' ')[0]) for x in full_choice_ans])
+Y = np.array([int(x[0].split(' ')[1]) for x in full_choice_ans])
+Z = np.array([x[1] for x in full_choice_ans])
 
 
 
