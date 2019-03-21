@@ -2,7 +2,7 @@ from itertools import product
 import numpy as np
 
 from main_tools import GeneticAlg
-from transfer_to_bits import opt, transform_params, full_choice
+from transfer_to_bits import opt, transform_params, full_choice, full_choice_smart
 
 class Block:
     def __init__(self, name, prop_1, prop_2, prop_3, prop_4, prop_5, min_blocks, max_blocks):
@@ -37,7 +37,7 @@ optimum = opt(rangs)
 print(optimum)
 blocks = transform_params(all_blocks)
 
-full_choice_result = full_choice(blocks, total_case, optimum, rangs)[0][1]
+full_choice_result = full_choice_smart(blocks, total_case, optimum, rangs)[1]
 exp_points = [(10, 90), (10, 90), (0.1, 0.9), (0.1, 0.9)]
 # размер поп    10  90
 # поколения     10  90
@@ -45,7 +45,6 @@ exp_points = [(10, 90), (10, 90), (0.1, 0.9), (0.1, 0.9)]
 # мутация       0.1 0.9
 
 exp_comb = list(product(*exp_points))
-print(exp_comb)
 
 results3 = {}
 for exp in exp_comb:
@@ -64,9 +63,6 @@ for exp in exp_comb:
 
 print(results3)
 
-#print(full_choice(blocks, total_case, optimum, rangs))
-
-
 RG = Block('РГ',        200, 5, 30, 600,    2400,   1, 10)
 IPSM = Block('ИПСМ',    210, 4, 30, 600,    2600,   1, 10)
 KVS = Block('КВС',      190, 4, 40, 700,    2000,   1, 10)
@@ -83,7 +79,7 @@ KRIK = Block('KRIK',    200, 6, 30, 670,    2400,   1, 10)
 total_case = 15
 all_blocks = [RG, IPSM, KVS, ZIV, FTS, KG_SV, PPK, VPK, PUP, KRIK]
 blocks = transform_params(all_blocks)
-full_choice_result = full_choice(blocks, total_case, optimum, rangs)[0][1]
+full_choice_result = full_choice_smart(blocks, total_case, optimum, rangs)[1]
 
 
 

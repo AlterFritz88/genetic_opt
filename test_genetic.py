@@ -1,7 +1,7 @@
 import numpy as np
 
 from main_tools import GeneticAlg
-from transfer_to_bits import Block, opt, transform_params, full_choice
+from transfer_to_bits import Block, opt, transform_params, full_choice, full_choice_smart
 
 KG_SV = Block('КГ-СВ',  50, 1,   1, 3)
 KVS = Block('КВС',      50, 60,  1, 8)
@@ -22,16 +22,18 @@ rangs = {
 optimum = opt(rangs)
 blocks = transform_params(all_blocks)
 GA = GeneticAlg(blocks, total_case, optimum, rangs, 100, 200, 0.7, 0.1)
-print(GA.start())
+
 results = []
+'''
 for i in range(10):
     result = GA.start()
     results.append(result[0][1])
 ga_result = np.array(results).mean()
 print(np.array(results).mean())
+'''
 
-print(full_choice(blocks, total_case, optimum, rangs))
 full_choice_ans = full_choice(blocks, total_case, optimum, rangs)[0][1]
 print(full_choice_ans)
+full_choice_smart_ans = full_choice_smart(blocks, total_case, optimum, rangs)
+print(full_choice_smart_ans)
 
-print(ga_result - full_choice_ans)

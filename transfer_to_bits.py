@@ -1,6 +1,8 @@
 import random
 from itertools import product
 
+import numpy as np
+
 class Block:
     def __init__(self, name, cost, wires, min_blocks, max_blocks):
         self.name = name
@@ -63,3 +65,36 @@ def full_choice(blocks, total_case, opt, rangs):
     full_choice_sorted = sorted(full_choice.items(), key=lambda kv: kv[1])
     return full_choice_sorted
 
+def full_choice_smart(blocks, total_case, opt, rangs):
+    range_blocks = [range(x.min_blocks, x.max_blocks + 1) for x in blocks]
+    output_comb = product(*range_blocks)
+    min_num = ('xxx',100)
+    counter_comb = 0
+    try:
+        while 1:
+            combination = list(output_comb.__next__())
+            if sum(combination) <= total_case:
+                result = func_opt(rangs, combination, blocks, opt)
+                counter_comb += 1
+                if result < min_num[1]:
+                    min_num = (' '.join([str(x) for x in combination]), result)
+    except StopIteration:
+        print('Total number of combinations: {}'.format(counter_comb))
+        return min_num
+
+def find_number_combinations(total_case, n_types, minimum, maximum):
+    range_blocks = [range(minimum, maximum + 1) for x in range(n_types)]
+    output_comb = product(*range_blocks)
+    counter_comb = 0
+
+    try:
+        while 1:
+            combination = np.array((output_comb.__next__()))
+            print(combination)
+            if np.sum(combination) <= total_case:
+                counter_comb += 1
+    except StopIteration:
+        print('Total number of combinations: {}'.format(counter_comb))
+
+if __name__ == '__main__':
+    find_number_combinations(45, 9, 1, 10)
