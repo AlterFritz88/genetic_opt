@@ -89,12 +89,12 @@ def find_number_combinations(total_case, n_types, minimum, maximum):
 
     try:
         while 1:
-            combination = np.array((output_comb.__next__()))
+            combination = [*output_comb.__next__()]
             print(combination)
-            if np.sum(combination) <= total_case:
+            if sum(combination) <= total_case:
                 counter_comb += 1
     except StopIteration:
         print('Total number of combinations: {}'.format(counter_comb))
 
 if __name__ == '__main__':
-    find_number_combinations(45, 9, 1, 10)
+    find_number_combinations(45, 8, 1, 12)
