@@ -68,6 +68,7 @@ def full_choice(blocks, total_case, opt, rangs):
 def full_choice_smart(blocks, total_case, opt, rangs):
     range_blocks = [range(x.min_blocks, x.max_blocks + 1) for x in blocks]
     output_comb = product(*range_blocks)
+    print('finding by full choice....')
     min_num = ('xxx',100)
     counter_comb = 0
     try:
@@ -90,11 +91,11 @@ def find_number_combinations(total_case, n_types, minimum, maximum):
     try:
         while 1:
             combination = [*output_comb.__next__()]
-            print(combination)
+            #print(combination)
             if sum(combination) <= total_case:
                 counter_comb += 1
     except StopIteration:
         print('Total number of combinations: {}'.format(counter_comb))
 
 if __name__ == '__main__':
-    find_number_combinations(45, 8, 1, 12)
+    find_number_combinations(45, 9, 1, 14)

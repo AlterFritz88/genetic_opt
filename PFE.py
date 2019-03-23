@@ -63,29 +63,44 @@ for exp in exp_comb:
 
 print(results3)
 
-RG = Block('РГ',        200, 5, 30, 600,    2400,   1, 10)
-IPSM = Block('ИПСМ',    210, 4, 30, 600,    2600,   1, 10)
-KVS = Block('КВС',      190, 4, 40, 700,    2000,   1, 10)
-ZIV = Block('ЗИВ',      200, 5, 30, 600,    2300,   1, 10)
-FTS = Block('ФТС',      180, 5, 30, 600,    2500,   1, 10)
-KG_SV = Block('КГ-СВ',  200, 5, 30, 600,    2400,   1, 10)
-
-PPK = Block('PPK',      200, 4, 40, 700,    2000,   1, 10)
-VPK = Block('VPK',      195, 5, 30, 600,    2300,   1, 10)
-PUP = Block('PUP',      205, 5, 34, 650,    2500,   1, 10)
-KRIK = Block('KRIK',    200, 6, 30, 670,    2400,   1, 10)
+total_case = 45
 
 
-total_case = 15
-all_blocks = [RG, IPSM, KVS, ZIV, FTS, KG_SV, PPK, VPK, PUP, KRIK]
+RG = Block('РГ',        200, 5, 30, 600,    2400,   1, 12)
+IPSM = Block('ИПСМ',    210, 4, 30, 600,    2600,   1, 12)
+KVS = Block('КВС',      190, 4, 40, 700,    2000,   1, 12)
+ZIV = Block('ЗИВ',      200, 5, 30, 600,    2300,   1, 12)
+FTS = Block('ФТС',      180, 5, 30, 600,    2500,   1, 12)
+KG_SV = Block('КГ-СВ',  200, 5, 30, 600,    2400,   1, 12)
+PPK = Block('ППК',      205, 4, 30, 600,    2400,   1, 12)
+all_blocks = [RG, IPSM, KVS, ZIV, FTS, KG_SV, RG, IPSM, PPK]
+optimum = opt(rangs)
 blocks = transform_params(all_blocks)
+
 full_choice_result = full_choice_smart(blocks, total_case, optimum, rangs)[1]
 
+results8 ={}
+for exp in exp_comb:
+    GA = GeneticAlg(blocks, total_case, optimum, rangs, exp[0], exp[1], exp[2], exp[3])
+    print(exp)
+    results8[exp] = []
+
+    for i in range(3):                  # 3 эксперемента для каждого
+        results_for_10_starts = []
+        for pusk in range(10):             # 10 запусков алгоритма
+            result_for_10_starts = GA.start()
+            results_for_10_starts.append(result_for_10_starts[0][1])
+        ga_result = np.array(results_for_10_starts).mean() - full_choice_result
+        results8[exp].append(ga_result)
+    results8[exp].append(np.array(results8[exp]).mean())
+
+print(results8)
 
 
-'''
+
 with open('results.csv', 'w') as f:
     f.write('F1,F2,F3,F4,F5,Ex1,Ex2,Ex3,Avg\n')
     for key, val in results3.items():
         f.write('3,{},{},{},{},{},{},{},{}\n'.format(key[0], key[1], key[2], key[3], val[0], val[1], val[2], val[3]))
-'''
+    for key, val in results8.items():
+        f.write('8,{},{},{},{},{},{},{},{}\n'.format(key[0], key[1], key[2], key[3], val[0], val[1], val[2], val[3]))
