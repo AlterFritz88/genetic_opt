@@ -165,3 +165,8 @@ exp_res_dict[8] = ga_result
 
 
 print(exp_res_dict)
+
+with open('graph_data.csv', 'w') as f:
+    f.write('exp,result\n')
+    for key, val in exp_res_dict.items():
+        f.write('{},{}\n'.format(key, val))

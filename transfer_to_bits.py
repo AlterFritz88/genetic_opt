@@ -98,4 +98,4 @@ def find_number_combinations(total_case, n_types, minimum, maximum):
         print('Total number of combinations: {}'.format(counter_comb))
 
 if __name__ == '__main__':
-    find_number_combinations(45, 9, 1, 14)
+    find_number_combinations(45, 11, 1, 14)
