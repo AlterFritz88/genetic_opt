@@ -54,7 +54,7 @@ def exp_3():
     full_choice_result = 0.1585042393663317
     print('full choice result: ', 3, full_choice_result)
 
-    for exp in range(5):
+    for exp in range(10):
         exp_points = [r.choice(ga_params['population']), r.choice(ga_params['generations']), round(r.choice(ga_params['cross_chance']), 2), round(r.choice(ga_params['mut_chance']), 2)]
         GA = GeneticAlg(blocks, total_case, optimum, rangs, exp_points[0], exp_points[1], exp_points[2], exp_points[3])
         print([3] + exp_points)
@@ -91,7 +91,7 @@ def exp_4():
     #full_choice_result = full_choice_smart(blocks, total_case, optimum, rangs)[1]
     full_choice_result = 0.078400904899165
     print('full choice result: ', 4, full_choice_result)
-    for exp in range(10):
+    for exp in range(20):
         exp_points = [r.choice(ga_params['population']), r.choice(ga_params['generations']), round(r.choice(ga_params['cross_chance']), 2), round(r.choice(ga_params['mut_chance']), 2)]
         GA = GeneticAlg(blocks, total_case, optimum, rangs, exp_points[0], exp_points[1], exp_points[2], exp_points[3])
         print([4] + exp_points)
@@ -126,7 +126,7 @@ def exp_5():
     #full_choice_result = full_choice_smart(blocks, total_case, optimum, rangs)[1]
     full_choice_result = 0.01250281921961476
     print('full choice result: ', 5, full_choice_result)
-    for exp in range(10):
+    for exp in range(100):
         exp_points = [r.choice(ga_params['population']), r.choice(ga_params['generations']), round(r.choice(ga_params['cross_chance']), 2), round(r.choice(ga_params['mut_chance']), 2)]
         GA = GeneticAlg(blocks, total_case, optimum, rangs, exp_points[0], exp_points[1], exp_points[2], exp_points[3])
         print([5] + exp_points)
@@ -168,7 +168,7 @@ def exp_6():
     #full_choice_result = full_choice_smart(blocks, total_case, optimum, rangs)[1]
     full_choice_result = 0.015020992462115166
     print('full choice result: ', 6, full_choice_result)
-    for exp in range(10):
+    for exp in range(100):
         exp_points = [r.choice(ga_params['population']), r.choice(ga_params['generations']), round(r.choice(ga_params['cross_chance']), 2), round(r.choice(ga_params['mut_chance']), 2)]
         GA = GeneticAlg(blocks, total_case, optimum, rangs, exp_points[0], exp_points[1], exp_points[2], exp_points[3])
         print([6] + exp_points)
@@ -213,7 +213,7 @@ def exp_7():
     #full_choice_result = full_choice_smart(blocks, total_case, optimum, rangs)[1]
     full_choice_result = 3.173649940531951e-13
     print('full choice result: ', 7, full_choice_result)
-    for exp in range(10):
+    for exp in range(100):
         exp_points = [r.choice(ga_params['population']), r.choice(ga_params['generations']), round(r.choice(ga_params['cross_chance']), 2), round(r.choice(ga_params['mut_chance']), 2)]
         GA = GeneticAlg(blocks, total_case, optimum, rangs, exp_points[0], exp_points[1], exp_points[2], exp_points[3])
         print([7] + exp_points)
@@ -258,7 +258,7 @@ def exp_8():
     #full_choice_result = full_choice_smart(blocks, total_case, optimum, rangs)[1]
     full_choice_result = 7.787457121909505e-13
     print('full choice result: ', 8, full_choice_result)
-    for exp in range(10):
+    for exp in range(100):
         exp_points = [r.choice(ga_params['population']), r.choice(ga_params['generations']), round(r.choice(ga_params['cross_chance']), 2), round(r.choice(ga_params['mut_chance']), 2)]
         GA = GeneticAlg(blocks, total_case, optimum, rangs, exp_points[0], exp_points[1], exp_points[2], exp_points[3])
         print([8] + exp_points)
